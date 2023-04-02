@@ -16,18 +16,6 @@ using System.Threading.Tasks;
        }
 
 
-    public override void CheckPointsOnErrors(point a, point b, screen screen1, string detailName)
-    {
-        center = new point((swest().x + neast().x) / 2, west().y);
-        radius = (neast().x - nwest().x) / 2;
-
-        if (ClassError.CheckParameters(new point(a.x, a.y), b, detailName))
-        {
-            addInDrawList = false;
-        }
-    }
-
-
        public override point north() { return center; }
        public override point south() { return new point(center.x - radius, center.y - radius); }
 
@@ -78,7 +66,6 @@ using System.Threading.Tasks;
         ne.y += y;
         center = new point((swest().x + neast().x) / 2, west().y);
         radius = (neast().x - nwest().x) / 2;
-        CheckError();
 
     }
 
@@ -88,10 +75,8 @@ using System.Threading.Tasks;
 
     public void flip_vertically()
     {
-        if (ClassError.CheckWasReflected(reflectable, detailName)) { return; }
         reflected = !reflected;
         reflectable = true;
-        CheckError();
     }
 
     public override void resize(int d)
@@ -99,25 +84,6 @@ using System.Threading.Tasks;
         radius *= d;
         sw.x = center.x - radius;
         ne.x = center.x + radius;
-        CheckError();
-    }
-
-    private void CheckError()
-    {
-        if (reflected)
-        {
-            if (ClassError.CheckPoints(new point[] { sw, ne, new point(center.y + radius) }, screen1, detailName))
-            {
-                addInDrawList = false;
-            }
-        }
-        else
-        {
-            if (ClassError.CheckPoints(new point[] { sw, ne, new point(center.y - radius) }, screen1, detailName))
-            {
-                addInDrawList = false;
-            }
-        }
     }
 }
 
