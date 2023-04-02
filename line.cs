@@ -15,10 +15,6 @@ using System.Xml.Linq;
 
     public line(point a, point b, screen screen, string name)
     {
-        if(ClassError.CheckPoints(new point[] { a, b }, screen1, name))
-        { 
-            addInDrawList = false;
-        }
         w = a;
         e = b;
         screen1 = screen;
@@ -30,7 +26,6 @@ using System.Xml.Linq;
     {
         w = a;
         e = new point(a.x + L - 1, a.y);
-        CheckPointsOnErrors(name);
         screen1 = screen;
         detailName = name;
         addShape.Invoke(this);
@@ -40,16 +35,8 @@ using System.Xml.Linq;
     {
         w = a;
         e = new point(a.x + L - 1, a.y);
-        CheckPointsOnErrors(detailName);
     }
 
-    private void CheckPointsOnErrors(string name)
-    {
-        if (ClassError.CheckParametersLine(w, e, name))
-        {
-            addInDrawList = false;
-        }
-    }
 
     public override void move(int a, int b)
     {
@@ -58,15 +45,10 @@ using System.Xml.Linq;
         e.x += a;
         e.y += b;
 
-        if (ClassError.CheckPoints(new point[] { w, e }, screen1, detailName, "перемещении"))
-        {
-            addInDrawList = false;
-        }
     }
 
     public override void draw()
     {
-        if (addInDrawList == false) { return; }
         utility.put_line(w, e, screen1);
     }
 
@@ -75,11 +57,7 @@ using System.Xml.Linq;
         e.x = w.x + (e.x - w.x) * d;
         e.y = w.y + (e.y - w.y) * d;
 
-        if (ClassError.CheckPoints(new point[] { w, e }, screen1, detailName, "масштабировании"))
-        {
-            addInDrawList = false;
-        }
-
+     
 
     }
 
