@@ -14,19 +14,11 @@ using System.Text;
         {
             sw = a;
             ne = b;
-            CheckPointsOnErrors(a, b, screen1, detailName);
             this.screen1 = screen1;
             this.detailName = detailName;
             addShape.Invoke(this);
         }
 
-    public virtual void CheckPointsOnErrors(point a, point b, screen screen1, string detailName)
-    {
-        if (ClassError.CheckPoints(new point[] { a, b }, screen1, detailName) || ClassError.CheckParameters(new point(a.x + 1, a.y + 1), b, detailName, "\r\nКоординаты первой точки должны быть меньше координат второй."))
-        {
-            addInDrawList = false;
-        }
-    }
 
     public override point north() { return new point((ne.x + sw.x) / 2, ne.y); }
     public override point south() { return new point((ne.x + sw.x) / 2, sw.y); }
@@ -39,7 +31,6 @@ using System.Text;
 
     public override void draw()
     {
-        if (addInDrawList == false) { return; }
         utility.put_line(nwest(), ne, screen1);
         utility.put_line(ne, seast(), screen1);
         utility.put_line(seast(), swest(), screen1);
@@ -49,28 +40,20 @@ using System.Text;
 
     public void rotate_right()
     {
-        if (ClassError.CheckWasRotated(rotatable, detailName)) { return; }
         int w =ne.x-sw.x;
         int h=ne.y-sw.y;
         sw.x = ne.x;
         ne.x = ne.x + h*2;
         ne.y = sw.y + w/2-1;
-        if (ClassError.CheckPoints(new point[] { sw, ne }, screen1, detailName, "повороте"))
-        {
-            addInDrawList = false;
-        }
+      
     }
     public void rotate_left()
     {
-        if (ClassError.CheckWasRotated(rotatable, detailName)) { return; }
         int w = ne.x - sw.x;
         int h = ne.y - sw.y;
         ne.x = sw.x - h;
         ne.y = sw.y + w-1;
-        if (ClassError.CheckPoints(new point[] { sw, ne }, screen1, detailName, "повороте"))
-        {
-            addInDrawList = false;
-        }
+       
     }
 
 
@@ -78,10 +61,7 @@ using System.Text;
     {
         ne.x = sw.x + (ne.x - sw.x) * d;
         ne.y = sw.y + (ne.y-sw.y) * d;
-        if (ClassError.CheckPoints(new point[] { sw, ne }, screen1, detailName, "масштабировании"))
-        {
-            addInDrawList = false;
-        }
+       
     }
 
     public override void move(int a, int b)
@@ -91,10 +71,7 @@ using System.Text;
         ne.x += a;
         ne.y += b;
 
-        if (ClassError.CheckPoints(new point[] { sw, ne }, screen1, detailName, "перемещении"))
-        {
-            addInDrawList = false;
-        }
+       
     }
 
 }
